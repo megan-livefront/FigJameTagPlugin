@@ -21,7 +21,7 @@ figma.ui.onmessage = (msg: {
 
         tag.text.characters = msg.tagName;
         const tagWidth = 150;
-        const tagHeight = getTagHeight(tag);
+        const tagHeight = 50;
         tag.resize(tagWidth, tagHeight);
 
         const fills = cloneFills(tag.fills);
@@ -54,11 +54,4 @@ figma.ui.onmessage = (msg: {
 
 function cloneFills(fills: Fills): Fills {
   return JSON.parse(JSON.stringify(fills));
-}
-
-/** Returns the appropriate height for the tag based on the character count. */
-function getTagHeight(tag: ShapeWithTextNode): number {
-  const tagTextCharCount = tag.text.characters.length;
-  const lines = parseInt((tagTextCharCount / 15).toString()) + 1;
-  return lines * 50;
 }
