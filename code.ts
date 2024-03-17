@@ -2,7 +2,7 @@ figma.showUI(__html__);
 
 type Fills = typeof figma.mixed | readonly Paint[];
 
-/** Finds nodes within the selection that contain the `clusterString` text. */
+/** Adds a tag to each `STICKY` node in the selection with the given tag name and color. */
 figma.ui.onmessage = (msg: {
   type: string;
   tagName: string;
