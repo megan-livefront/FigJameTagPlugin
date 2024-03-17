@@ -8,6 +8,8 @@
   <form>
     <label for="tagName">Tag name:</label>
     <input id="tagName" type="string" value="" autofocus>
+    <label for="tagColor">Tag hex color:</label>
+    <input id="tagColor" type="string" value="">
     <div class="buttonWrapper">
       <button id="create" type="submit">add tag</button>
       <button id="cancel" type="button">cancel</button>
@@ -21,9 +23,9 @@
   }
 
   document.getElementById('create').onclick = () => {
-    const textbox = document.getElementById('tagName');
-    const tagName = textbox.value;
-    parent.postMessage({ pluginMessage: { type: 'create-tag', tagName } }, '*')
+    const tagName = document.getElementById('tagName').value;
+    const tagColor = document.getElementById('tagColor').value
+    parent.postMessage({ pluginMessage: { type: 'create-tag', tagName, tagColor } }, '*')
   }
 
   document.getElementById('cancel').onclick = () => {
@@ -33,6 +35,10 @@
 </script>
 
 <style>
+  #plugin-iframe-in-modal {
+    height: 230px;
+  }
+
   .wrapper {
     font-family: "Asap Condensed", sans-serif;
     font-weight: 400;

@@ -1,7 +1,13 @@
 figma.showUI(__html__);
 
+type Fills = typeof figma.mixed | readonly Paint[];
+
 /** Finds nodes within the selection that contain the `clusterString` text. */
-figma.ui.onmessage = (msg: { type: string; tagName: string }) => {
+figma.ui.onmessage = (msg: {
+  type: string;
+  tagName: string;
+  tagColor: string;
+}) => {
   if (msg.type === "create-tag") {
     const currentViewPort = figma.currentPage.selection[0].absoluteBoundingBox;
 
@@ -17,6 +23,16 @@ figma.ui.onmessage = (msg: { type: string; tagName: string }) => {
         const tagWidth = 150;
         const tagHeight = getTagHeight(tag);
         tag.resize(tagWidth, tagHeight);
+
+        const fills = cloneFills(tag.fills);
+        if (Array.isArray(fills)) {
+          const tagColor = msg.tagColor;
+          const backgroundColor = tagColor.includes("#")
+            ? tagColor
+            : `#${tagColor}`;
+          fills[0] = figma.util.solidPaint(backgroundColor, fills[0]);
+          tag.fills = fills;
+        }
 
         const selectedNodes = figma.currentPage.selection;
         selectedNodes.forEach((node) => {
@@ -35,6 +51,10 @@ figma.ui.onmessage = (msg: { type: string; tagName: string }) => {
     }
   }
 };
+
+function cloneFills(fills: Fills): Fills {
+  return JSON.parse(JSON.stringify(fills));
+}
 
 /** Returns the appropriate height for the tag based on the character count. */
 function getTagHeight(tag: ShapeWithTextNode): number {
