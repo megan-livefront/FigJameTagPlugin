@@ -5,13 +5,12 @@
   "main": "code.js",
   "capabilities": [],
   "enableProposedApi": false,
-  "editorType": [
-    "figjam"
-  ],
+  "editorType": ["figjam"],
   "ui": "ui.html",
   "networkAccess": {
     "allowedDomains": [
-      "none"
+      "https://fonts.googleapis.com",
+      "https://fonts.gstatic.com"
     ]
   },
   "documentAccess": "dynamic-page"
