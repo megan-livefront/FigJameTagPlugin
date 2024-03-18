@@ -18,12 +18,15 @@ figma.ui.onmessage = (msg: {
 
         // Load the font before setting characters
         await figma.loadFontAsync(tag.text.fontName as FontName);
-
         tag.text.characters = msg.tagName;
-        const tagWidth = 150;
-        const tagHeight = 50;
+
+        // Set width and height of tag
+        const widthBasedOnTagText = msg.tagName.length * 12;
+        const tagWidth = widthBasedOnTagText < 150 ? widthBasedOnTagText : 150;
+        const tagHeight = 40;
         tag.resize(tagWidth, tagHeight);
 
+        // Set color of tag
         const fills = cloneFills(tag.fills);
         if (Array.isArray(fills)) {
           const tagColor = msg.tagColor;
@@ -34,12 +37,13 @@ figma.ui.onmessage = (msg: {
           tag.fills = fills;
         }
 
+        // Add tag to each of the selected sticky nodes
         const selectedNodes = figma.currentPage.selection;
-        selectedNodes.forEach((node) => {
+        selectedNodes.forEach((node, index) => {
           if (node.type === "STICKY") {
             const stickyX = node.x;
             const stickyY = node.y;
-            const tagForNode = tag.clone();
+            const tagForNode = index === 0 ? tag : tag.clone();
             tagForNode.x = stickyX + 15;
             tagForNode.y = stickyY + node.height - (tagHeight + 15);
             figma.group([node, tagForNode], figma.currentPage);
