@@ -21,8 +21,7 @@ figma.ui.onmessage = (msg: {
         tag.text.characters = msg.tagName;
 
         // Set width and height of tag
-        const widthBasedOnTagText = msg.tagName.length * 12;
-        const tagWidth = widthBasedOnTagText < 150 ? widthBasedOnTagText : 150;
+        const tagWidth = getTagWidth(msg.tagName);
         const tagHeight = 40;
         tag.resize(tagWidth, tagHeight);
 
@@ -56,6 +55,15 @@ figma.ui.onmessage = (msg: {
   }
 };
 
+/** Returns appropriate tag width based on characters in `tagName`. */
+function getTagWidth(tagName: string): number {
+  const widthBasedOnTagText = tagName.length * 12;
+  if (widthBasedOnTagText < 40) return 40;
+  else if (widthBasedOnTagText > 150) return 150;
+  else return widthBasedOnTagText;
+}
+
+/** Returns a clone of the given `fills` object. */
 function cloneFills(fills: Fills): Fills {
   return JSON.parse(JSON.stringify(fills));
 }
