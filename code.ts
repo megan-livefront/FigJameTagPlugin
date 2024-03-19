@@ -28,10 +28,7 @@ figma.ui.onmessage = (msg: {
         // Set color of tag
         const fills = cloneFills(tag.fills);
         if (Array.isArray(fills)) {
-          const tagColor = msg.tagColor;
-          const backgroundColor = tagColor.includes("#")
-            ? tagColor
-            : `#${tagColor}`;
+          const backgroundColor = getBackgroundColor(msg.tagColor);
           fills[0] = figma.util.solidPaint(backgroundColor, fills[0]);
           tag.fills = fills;
         }
@@ -55,10 +52,15 @@ figma.ui.onmessage = (msg: {
   }
 };
 
+function getBackgroundColor(tagColor: string | undefined): string {
+  if (!tagColor) return "#E4CCFF";
+  else return tagColor.includes("#") ? tagColor : `#${tagColor}`;
+}
+
 /** Returns appropriate tag width based on characters in `tagName`. */
 function getTagWidth(tagName: string): number {
   const widthBasedOnTagText = tagName.length * 12;
-  if (widthBasedOnTagText < 40) return 40;
+  if (widthBasedOnTagText < 50) return 60;
   else if (widthBasedOnTagText > 150) return 150;
   else return widthBasedOnTagText;
 }
