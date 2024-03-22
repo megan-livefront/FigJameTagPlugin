@@ -41,7 +41,7 @@ figma.ui.onmessage = (msg: {
             const stickyX = node.x;
             const stickyY = node.y;
             const tagForNode = index === 0 ? tag : tag.clone();
-            tagForNode.x = stickyX + 15;
+            tagForNode.x = stickyX + node.width - tagWidth - 15;
             tagForNode.y = stickyY + node.height - (tagHeight + 15);
             figma.group([node, tagForNode], figma.currentPage);
           }
